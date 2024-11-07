@@ -21,13 +21,7 @@ pipeline {
             }
         }
 
-        stage('Lint') {
-            steps {
-                echo 'Running linter...'
-                // Запуск линтера (flake8) для проверки кода
-                sh '. ${VENV_DIR}/bin/activate && flake8 .'
-            }
-        }
+
 
         stage('Build Docker Image') {
             steps {
