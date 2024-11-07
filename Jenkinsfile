@@ -40,13 +40,4 @@ pipeline {
         
     }
 
-    post {
-        always {
-            echo 'Cleaning up...'
-            // Остановка и удаление тестового контейнера
-            sh 'docker rm -f flask_app || true'
-            // Удаление рабочей директории
-            deleteDir()
-        }
-    }
 }
