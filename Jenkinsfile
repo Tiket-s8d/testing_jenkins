@@ -7,10 +7,11 @@ pipeline {
     }
 
     stages {
-        stage('Setup') {
-            docker {
+        docker {
             image 'python:3.9-slim' // Python-образ для запуска контейнера
-            }
+        }
+
+        stage('Setup') {
             steps {
                 
                 echo 'Setting up Python environment...'
@@ -20,10 +21,6 @@ pipeline {
 
                 
             }
-        }
-
-
-        
+        }        
     }
-
 }
