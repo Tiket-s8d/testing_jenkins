@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9-slim' // Python-образ для запуска контейнера
-            args '-v /var/run/docker.sock:/var/run/docker.sock' // Подключаем Docker-сокет
-        }
-    }
+    agent any
 
     environment {
         VENV_DIR = 'venv' // Директория для виртуального окружения
@@ -13,15 +8,17 @@ pipeline {
 
     stages {
         stage('Setup') {
+            docker {
+            image 'python:3.9-slim' // Python-образ для запуска контейнера
+            }
             steps {
-                script {
-                    docker.image('python:3.9').inside{
-                        echo 'Setting up Python environment...'
+                
+                echo 'Setting up Python environment...'
                 // Создание виртуального окружения и установка зависимостей
-                        sh 'python -m venv ${VENV_DIR}'
-                        sh '. ${VENV_DIR}/bin/activate && pip install -r requirements.txt'
-                    }
-                }
+                sh 'python -m venv ${VENV_DIR}'
+                sh '. ${VENV_DIR}/bin/activate && pip install -r requirements.txt'
+
+                
             }
         }
 
