@@ -1,23 +1,22 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.9-slim' // Образ Python для запуска приложения
-            args '-v /var/run/docker.sock:/var/run/docker.sock' // Передаем Docker сокет в контейнер
+            image 'python:3.9-slim' // Python-образ для запуска контейнера
+            args '-v /var/run/docker.sock:/var/run/docker.sock' // Подключаем Docker-сокет
         }
     }
 
     environment {
         VENV_DIR = 'venv' // Директория для виртуального окружения
-        DOCKER_IMAGE = "my-web-app:${env.BUILD_ID}" // Имя Docker-образа с версией
+        DOCKER_IMAGE = "my-web-app:${env.BUILD_ID}" // Имя Docker-образа с версией сборки
     }
 
     stages {
         stage('Setup') {
             steps {
                 echo 'Setting up Python environment...'
-                // Установка Python и создание виртуального окружения
-                sh 'python3 -m venv ${VENV_DIR}'
-                // Установка зависимостей
+                // Создание виртуального окружения и установка зависимостей
+                sh 'python -m venv ${VENV_DIR}'
                 sh '. ${VENV_DIR}/bin/activate && pip install -r requirements.txt'
             }
         }
@@ -25,7 +24,7 @@ pipeline {
         stage('Lint') {
             steps {
                 echo 'Running linter...'
-                // Запуск линтера (flake8)
+                // Запуск линтера (flake8) для проверки кода
                 sh '. ${VENV_DIR}/bin/activate && flake8 .'
             }
         }
@@ -33,17 +32,20 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image...'
-                // Сборка Docker-образа для приложения
+                // Сборка Docker-образа для Flask-приложения
                 sh "docker build -t ${DOCKER_IMAGE} ."
             }
         }
-  
+        
+        
     }
 
     post {
         always {
             echo 'Cleaning up...'
-            // Очистка рабочей директории
+            // Остановка и удаление тестового контейнера
+            sh 'docker rm -f flask_app || true'
+            // Удаление рабочей директории
             deleteDir()
         }
     }
