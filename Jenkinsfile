@@ -14,23 +14,18 @@ pipeline {
     stages {
         stage('Setup') {
             steps {
-                echo 'Setting up Python environment...'
+                script {
+                    docker.image('python:3.9').inside{
+                        echo 'Setting up Python environment...'
                 // Создание виртуального окружения и установка зависимостей
-                sh 'python -m venv ${VENV_DIR}'
-                sh '. ${VENV_DIR}/bin/activate && pip install -r requirements.txt'
+                        sh 'python -m venv ${VENV_DIR}'
+                        sh '. ${VENV_DIR}/bin/activate && pip install -r requirements.txt'
+                    }
+                }
             }
         }
 
 
-
-        stage('Build Docker Image') {
-            steps {
-                echo 'Building Docker image...'
-                // Сборка Docker-образа для Flask-приложения
-                sh "docker build -t ${DOCKER_IMAGE} ."
-            }
-        }
-        
         
     }
 
