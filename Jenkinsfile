@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.9-slim' // Образ Python для запуска приложения
+            args '-v /var/run/docker.sock:/var/run/docker.sock' // Передаем Docker сокет в контейнер
+        }
+    }
 
     environment {
         VENV_DIR = 'venv' // Директория для виртуального окружения
