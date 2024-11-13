@@ -45,15 +45,22 @@ pipeline {
             echo "Using kubeconfig file: $KUBECONFIG"
             export KUBECONFIG=$KUBECONFIG
 
-            helm repo add test https://Tiket-s8d.github.io/testing-hlem/gh-pages/
+            helm repo add test https://tiket-s8d.github.io/testing_helm
             
             helm repo update
 
-            helm upgrade  ${HELM_RELEASE} test \
-                --namespace ${KUBE_NAMESPACE} \
-                --create-namespace \
-                --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
-                --set image.tag=${BUILD_ID}
+            if ! helm list -n ${KUBE_NAMESPACE} | grep -q ${HELM_RELEASE}; then
+                helm install ${HELM_RELEASE} test/${HELM_CHART_NAME} \
+                    --namespace ${KUBE_NAMESPACE} \
+                    --create-namespace \
+                    --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
+                    --set image.tag=${BUILD_ID}
+            else
+                helm upgrade ${HELM_RELEASE} test/${HELM_CHART_NAME} \
+                    --namespace ${KUBE_NAMESPACE} \
+                    --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
+                    --set image.tag=${BUILD_ID}
+            fi
             '''
         }
     }
