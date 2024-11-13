@@ -15,18 +15,11 @@ pipeline {
             }
         }
 
-        stage('Get Version Tag') {
-            steps {
-                script {
-                    env.DOCKER_IMAGE = "${DOCKER_REGISTRY}/test:${GIT_TAG}"
-                }
-            }
-        }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}")
+                    docker.build("${DOCKER_REGISTRY}/test:${env.BUILD_ID}")
                 }
             }
         }
@@ -35,7 +28,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("http://${DOCKER_REGISTRY}", 'docker-credentials-id') {
-                        docker.image("${DOCKER_IMAGE}").push()
+                        docker.image("${DOCKER_REGISTRY}/test:${env.BUILD_ID}").push()
                     }
                 }
             }
@@ -48,9 +41,9 @@ pipeline {
                         sh """
                         helm upgrade --install ${HELM_RELEASE} ${HELM_CHART_PATH} \
                             --namespace ${KUBE_NAMESPACE} \
-                            --set image.repository=${DOCKER_REGISTRY}/your-app-name \
-                            --set image.tag=${GIT_TAG}-${env.BUILD_ID} \
-                            --set someOtherParameter=value
+                            --set image.repository=${DOCKER_REGISTRY}/test \
+                            --set image.tag=${env.BUILD_ID} \
+
                         """
                     }
                 }
