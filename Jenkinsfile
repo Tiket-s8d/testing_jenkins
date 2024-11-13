@@ -37,26 +37,12 @@ pipeline {
             steps {
                 scritp {
                     sh '''
-                    echo ${env.BUILD_ID}
+                    echo ${BUILD_ID}
                     '''
                 }
             }
         }
-        stage('Setup Kubernetes') {
-            steps {
-                withCredentials([file(credentialsId: 'KUBECONFIG_CREDENTIALS', variable: 'KUBECONFIG')]) {
-                    sh '''
-                    echo "Using kubeconfig file: $KUBECONFIG"
-                    export KUBECONFIG=$KUBECONFIG
-                    helm install ${HELM_RELEASE} ${HELM_CHART_PATH} \
-                            --namespace ${KUBE_NAMESPACE} \
-                            --create-namespace \
-                            --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
-                            --set image.tag=${env.BUILD_ID}
-                    '''
-                }
-            }
-        }
+        
         
     }
 
