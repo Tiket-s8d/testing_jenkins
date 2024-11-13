@@ -39,6 +39,9 @@ pipeline {
                     sh '''
                     echo "Using kubeconfig file: $KUBECONFIG"
                     export KUBECONFIG=$KUBECONFIG
+                    helm uninstall ${HELM_RELEASE} \
+                            --namespace ${KUBE_NAMESPACE}
+                            
                     helm install ${HELM_RELEASE} ${HELM_CHART_PATH} \
                             --namespace ${KUBE_NAMESPACE} \
                             --create-namespace \
