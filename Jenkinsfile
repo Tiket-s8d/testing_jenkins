@@ -49,9 +49,7 @@ pipeline {
             
             helm repo update
 
-            helm uninstall ${HELM_RELEASE} --namespace ${KUBE_NAMESPACE}
-
-            helm install ${HELM_RELEASE} test/${HELM_RELEASE} \
+            helm upgrade  ${HELM_RELEASE} test/${HELM_RELEASE} \
                 --namespace ${KUBE_NAMESPACE} \
                 --create-namespace \
                 --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
