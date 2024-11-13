@@ -34,10 +34,8 @@ pipeline {
             }
         }
         stage('Cleanup') {
-            steps {
-                script {
-                    docker.image("${DOCKER_REGISTRY}/test:${env.BUILD_ID}").remove()
-                }
+            steps{
+                sh "docker rmi ${env.IMAGENAME}:${env.BUILD_ID}"
             }
         }
         stage('Setup Kubernetes') {
