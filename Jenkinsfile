@@ -42,7 +42,7 @@ pipeline {
                             --set image.repository=${DOCKER_REGISTRY}/your-app-name \
                             --set image.tag=${GIT_TAG}-${env.BUILD_ID}
                         """
-                    }
+                    
                 }
             }
         }
