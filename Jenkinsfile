@@ -35,7 +35,7 @@ pipeline {
         }
         stage('Cleanup') {
             steps{
-                sh "docker rmi ${env.IMAGENAME}:${env.BUILD_ID}"
+                sh "docker rmi ${DOCKER_REGISTRY}/test:${env.BUILD_ID}"
             }
         }
         stage('Setup Kubernetes') {
