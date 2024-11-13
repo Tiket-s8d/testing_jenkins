@@ -50,13 +50,13 @@ pipeline {
             helm repo update
 
             if ! helm list -n ${KUBE_NAMESPACE} | grep -q ${HELM_RELEASE}; then
-                helm install ${HELM_RELEASE} testing/${HELM_CHART_NAME} \
+                helm install ${HELM_RELEASE} testing/${HELM_RELEASE} \
                     --namespace ${KUBE_NAMESPACE} \
                     --create-namespace \
                     --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
                     --set image.tag=${BUILD_ID}
             else
-                helm upgrade ${HELM_RELEASE} testing/${HELM_CHART_NAME} \
+                helm upgrade ${HELM_RELEASE} testing/${HELM_RELEASE} \
                     --namespace ${KUBE_NAMESPACE} \
                     --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
                     --set image.tag=${BUILD_ID}
