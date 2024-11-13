@@ -34,21 +34,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    withKubeConfig([credentialsId: 'k3s', serverUrl: 'https://192.168.0.112:6443']) {
-                        sh """
-                        helm upgrade --install ${HELM_RELEASE} ${HELM_CHART_PATH} \
-                            --namespace ${KUBE_NAMESPACE} \
-                            --set image.repository=${DOCKER_REGISTRY}/test \
-                            --set image.tag=${env.BUILD_ID} \
-
-                        """
-                    }
-                }
-            }
-        }
+        
     }
 
 
