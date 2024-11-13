@@ -6,7 +6,7 @@ pipeline {
         KUBE_NAMESPACE = 'test'
         HELM_RELEASE = 'test'
         HELM_CHART_PATH = './test'
-        
+        KUBECONFIG = '/etc/rancher/k3s/k3s-remote.yaml'
     }
 
     stages {
