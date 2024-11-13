@@ -39,7 +39,7 @@ pipeline {
                     sh '''
                     echo "Using kubeconfig file: $KUBECONFIG"
                     export KUBECONFIG=$KUBECONFIG
-                    export BUILD_ID=$env.BUILD_ID
+                    export BUILD_ID=${env.BUILD_ID}
                     helm install ${HELM_RELEASE} ${HELM_CHART_PATH} \
                             --namespace ${KUBE_NAMESPACE} \
                             --create-namespace \
