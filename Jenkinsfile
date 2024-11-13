@@ -39,6 +39,7 @@ pipeline {
                 // Pull kubeconfig file from Jenkins credentials
                     sh """
                     echo $KUBECONFIG
+                    kubectl get pods -A
                     """
             }
         }
