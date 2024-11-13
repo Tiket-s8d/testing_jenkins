@@ -39,7 +39,7 @@ pipeline {
                     sh '''
                     echo "Using kubeconfig file: $KUBECONFIG"
                     export KUBECONFIG=$KUBECONFIG
-                    kubectl get nodes  # пример использования kubectl
+                    helm list
                     '''
                 }
             }
