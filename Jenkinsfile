@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                         sh """
-                            echo $KUBECONFIG
+                            kubectl get pods -A
                         """
                     
                 }
