@@ -37,12 +37,9 @@ pipeline {
         stage('Setup Kubernetes') {
             steps {
                 // Pull kubeconfig file from Jenkins credentials
-                withCredentials([file(credentialsId: 'KUBECONFIG_CREDENTIALS')]) {
                     sh """
-                    # Copy kubeconfig to workspace
-                    kubectl get nodes
+                    echo $KUBECONFIG
                     """
-                }
             }
         }
         
