@@ -33,7 +33,20 @@ pipeline {
                 }
             }
         }
-
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    withKubeConfig([credentialsId: 'kube-config-id', serverUrl: 'https://kubernetes-server-url:6443']) {
+                        sh """
+                        helm upgrade --install ${HELM_RELEASE} ${HELM_CHART_PATH} \
+                            --namespace ${KUBE_NAMESPACE} \
+                            --set image.repository=${DOCKER_REGISTRY}/your-app-name \
+                            --set image.tag=${GIT_TAG}-${env.BUILD_ID}
+                        """
+                    }
+                }
+            }
+        }
         
     }
 
