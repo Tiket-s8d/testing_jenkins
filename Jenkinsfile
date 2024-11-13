@@ -39,23 +39,28 @@ pipeline {
             }
         }
         stage('Setup Kubernetes') {
-            steps {
-                withCredentials([file(credentialsId: 'KUBECONFIG_CREDENTIALS', variable: 'KUBECONFIG')]) {
-                    sh '''
-                    echo "Using kubeconfig file: $KUBECONFIG"
-                    export KUBECONFIG=$KUBECONFIG
-                    helm uninstall ${HELM_RELEASE} \
-                            --namespace ${KUBE_NAMESPACE}
+    steps {
+        withCredentials([file(credentialsId: 'KUBECONFIG_CREDENTIALS', variable: 'KUBECONFIG')]) {
+            sh '''
+            echo "Using kubeconfig file: $KUBECONFIG"
+            export KUBECONFIG=$KUBECONFIG
 
-                    helm install ${HELM_RELEASE} ${HELM_CHART_PATH} \
-                            --namespace ${KUBE_NAMESPACE} \
-                            --create-namespace \
-                            --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
-                            --set image.tag=${BUILD_ID}
-                    '''
-                }
-            }
+            helm repo add test https://Tiket-s8d.github.io/testing-hlem/gh-pages/
+            
+            helm repo update
+
+            helm uninstall ${HELM_RELEASE} --namespace ${KUBE_NAMESPACE}
+
+            helm install ${HELM_RELEASE} test/${HELM_CHART_NAME} \
+                --namespace ${KUBE_NAMESPACE} \
+                --create-namespace \
+                --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
+                --set image.tag=${BUILD_ID}
+            '''
         }
+    }
+}
+
         
     }
 
