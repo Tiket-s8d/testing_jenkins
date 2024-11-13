@@ -39,6 +39,7 @@ pipeline {
                     docker.image("${DOCKER_REGISTRY}/test:${env.BUILD_ID}").remove()
                 }
             }
+        }
         stage('Setup Kubernetes') {
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG_CREDENTIALS', variable: 'KUBECONFIG')]) {
