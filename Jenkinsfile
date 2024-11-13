@@ -6,6 +6,7 @@ pipeline {
         KUBE_NAMESPACE = 'test'
         HELM_RELEASE = 'test'
         HELM_CHART_PATH = './test'
+        
     }
 
     stages {
@@ -33,13 +34,14 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Kubernetes') {
+        stage('Setup Kubernetes') {
             steps {
-                script {
-                        sh """
-                            kubectl get pods -A
-                        """
-                    
+                // Pull kubeconfig file from Jenkins credentials
+                withCredentials([file(credentialsId: 'KUBECONFIG_CREDENTIALS')]) {
+                    sh """
+                    # Copy kubeconfig to workspace
+                    kubectl get nodes
+                    """
                 }
             }
         }
