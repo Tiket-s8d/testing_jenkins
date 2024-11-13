@@ -18,8 +18,7 @@ pipeline {
         stage('Get Version Tag') {
             steps {
                 script {
-                    env.GIT_TAG = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
-                    env.DOCKER_IMAGE = "${DOCKER_REGISTRY}/test:${GIT_TAG}-${env.BUILD_ID}"
+                    env.DOCKER_IMAGE = "${DOCKER_REGISTRY}/test:${GIT_TAG}"
                 }
             }
         }
