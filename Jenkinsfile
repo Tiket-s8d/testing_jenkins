@@ -49,7 +49,7 @@ pipeline {
             
             helm repo update
 
-            helm upgrade  ${HELM_RELEASE} test/${HELM_RELEASE} \
+            helm upgrade  ${HELM_RELEASE} test \
                 --namespace ${KUBE_NAMESPACE} \
                 --create-namespace \
                 --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
