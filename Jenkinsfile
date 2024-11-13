@@ -39,7 +39,10 @@ pipeline {
                     sh '''
                     echo "Using kubeconfig file: $KUBECONFIG"
                     export KUBECONFIG=$KUBECONFIG
-                    helm list
+                    helm upgrade --install ${HELM_RELEASE} ${HELM_CHART_PATH} \
+                            --namespace ${KUBE_NAMESPACE} \
+                            --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
+                            --set image.tag=${GIT_TAG}-${env.BUILD_ID}
                     '''
                 }
             }
