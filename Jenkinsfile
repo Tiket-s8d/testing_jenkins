@@ -37,10 +37,7 @@ pipeline {
             steps {
                 script {
                         sh """
-                        helm upgrade --install ${HELM_RELEASE} ${HELM_CHART_PATH} \
-                            --namespace ${KUBE_NAMESPACE} \
-                            --set image.repository=${DOCKER_REGISTRY}/your-app-name \
-                            --set image.tag=${GIT_TAG}-${env.BUILD_ID}
+                            echo $KUBECONFIG
                         """
                     
                 }
