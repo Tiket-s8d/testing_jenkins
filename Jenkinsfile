@@ -6,7 +6,6 @@ pipeline {
         KUBE_NAMESPACE = 'test'
         HELM_RELEASE = 'test'
         HELM_CHART_PATH = './test'
-        KUBECONFIG = '/etc/rancher/k3s/k3s-remote.yaml'
     }
 
     stages {
@@ -36,11 +35,13 @@ pipeline {
         }
         stage('Setup Kubernetes') {
             steps {
-                // Pull kubeconfig file from Jenkins credentials
-                    sh """
-                    echo $KUBECONFIG
-                    kubectl get pods -A
-                    """
+                withCredentials([file(credentialsId: 'KUBECONFIG_CREDENTIALS', variable: 'KUBECONFIG')]) {
+                    sh '''
+                    echo "Using kubeconfig file: $KUBECONFIG"
+                    export KUBECONFIG=$KUBECONFIG
+                    kubectl get nodes  # пример использования kubectl
+                    '''
+                }
             }
         }
         
