@@ -33,6 +33,15 @@ pipeline {
                 }
             }
         }
+        stage('test'){
+            steps {
+                scritp {
+                    sh '''
+                    echo ${env.BUILD_ID}
+                    '''
+                }
+            }
+        }
         stage('Setup Kubernetes') {
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG_CREDENTIALS', variable: 'KUBECONFIG')]) {
