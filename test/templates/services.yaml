@@ -10,5 +10,10 @@ spec:
     {{- include "test.selectorLabels" . | nindent 4 }}
   ports:
   - port: {{ .Values.service.port }}
-    targetPort: {{ .Values.service.targetPort }}
-  
+    targetPort: 5000
+    {{- if .Values.service.name }}
+    name: {{- .Values.service.name}}
+    {{- end}}
+    {{- if and .Values.service.nodePort (eq .Values.service.type "NodePort")}}
+    nodePort: {{ .Values.serviec.nodePort }}
+    {{- end }}
