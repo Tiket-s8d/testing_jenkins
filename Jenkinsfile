@@ -41,12 +41,12 @@ pipeline {
                     export KUBECONFIG=$KUBECONFIG
                     helm uninstall ${HELM_RELEASE} \
                             --namespace ${KUBE_NAMESPACE}
-                            
+
                     helm install ${HELM_RELEASE} ${HELM_CHART_PATH} \
                             --namespace ${KUBE_NAMESPACE} \
                             --create-namespace \
                             --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
-                            --set image.tag=${BUILD_NUMBER}
+                            --set image.tag=${BUILD_ID}
                     '''
                 }
             }
