@@ -43,7 +43,7 @@ pipeline {
                             --namespace ${KUBE_NAMESPACE} \
                             --create-namespace \
                             --set image.repository=${DOCKER_REGISTRY}/${HELM_RELEASE} \
-                            --set image.tag=${env.BUILD_NUMBER}
+                            --set image.tag=${BUILD_NUMBER}
                     '''
                 }
             }
