@@ -7,7 +7,7 @@ app = Flask(__name__)
 def home():
     return "Hello, Flask!\n tselthskdfjgdlgjdlkfg\n jgdfngljkdsfnhksrjlthystjlghlkfgh\n"
 
-@app.route('/healthy')
+@app.route('/healthyss')
 def healthy():
     # Возвращает JSON-ответ с сообщением и статусом 200
     return jsonify(status="healthy", message="Server is healthy!"), 200
